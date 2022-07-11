@@ -741,8 +741,14 @@ function h264bitstream.rbsp_to_nal(data, size)
     return nal, n
 end
 
+local code = ffi.new('uint8_t[4]', 0, 0, 0, 1)
+
 function h264bitstream.write_nal_unit(stream, buffer, size)
-    return libh264bitstream.write_nal_unit(stream, buffer, size)
+    -- https://github.com/aizvorski/h264bitstream/issues/5
+    local n = libh264bitstream.write_nal_unit(stream, buffer + 3, size - 3)
+    n = n + 3
+    ffi.copy(buffer, code, 4)
+    return n
 end
 
 return h264bitstream
