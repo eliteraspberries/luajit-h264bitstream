@@ -11,6 +11,7 @@ test -f h264bitstream-${VERSION}.zip || \
     https://github.com/aizvorski/h264bitstream/archive/refs/tags/${VERSION}.zip
 test -d h264bitstream-${VERSION} || \
     unzip h264bitstream-${VERSION}.zip
+patch -f -p0 < ${dir}/patches/patch-h264bitstream-${VERSION}.txt || true
 cd h264bitstream-${VERSION}
 
 AR="${AR:=ar}"

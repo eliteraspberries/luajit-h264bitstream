@@ -744,10 +744,11 @@ end
 local code = ffi.new('uint8_t[4]', 0, 0, 0, 1)
 
 function h264bitstream.write_nal_unit(stream, buffer, size)
-    -- https://github.com/aizvorski/h264bitstream/issues/5
-    local n = libh264bitstream.write_nal_unit(stream, buffer + 3, size - 3)
-    n = n + 3
+    local n = libh264bitstream.write_nal_unit(stream, buffer + 4, size - 4)
     ffi.copy(buffer, code, 4)
+    if n >= 0 then
+        n = n + 4
+    end
     return n
 end
 
